@@ -1,0 +1,28 @@
+[
+  {
+    "id": "1",
+    "name": "Pancho",
+    "dob": "05/03/2019",
+    "sex": "male",
+    "specie": "dog",
+    "breed": "Labrador",
+    "picture": "https://images.pexels.com/photos/2253275/pexels-photo-2253275.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+  },
+  {
+    "id": "2",
+    "name": "Chuchis",
+    "dob": "18/04/2017",
+    "sex": "female",
+    "specie": "dog",
+    "breed": "chiguagua",
+    "picture": "https://images.pexels.com/photos/97082/weimaraner-puppy-dog-snout-97082.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+  },
+  {
+    "id": "3",
+    "name": "Misifus",
+    "dob": "29/08/2018",
+    "specie": "cat",
+    "breed": "Angora",
+    "picture": "https://images.pexels.com/photos/774731/pexels-photo-774731.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+  }
+]

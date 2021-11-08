@@ -29,6 +29,7 @@ function register(request, response) {
   }
 
   if (createdUser) {
+    delete newUser.password;
     return formatedResponse(
       response,
       201,
@@ -51,6 +52,7 @@ function login(request, response) {
     }
 
     if (user.password === password) {
+      delete user.password
       return formatedResponse(
         response,
         200,
@@ -88,7 +90,7 @@ function findAll() {
     return JSON.parse(rawData);
   } catch (error) {
     console.error(error.toString());
-    return
+    return [];
   }
 }
 
@@ -111,7 +113,7 @@ function findBy(key, value) {
     return [item, data];
   } catch (error) {
     console.error(error.toString());
-    return
+    return [undefined, []];
   }
 }
 

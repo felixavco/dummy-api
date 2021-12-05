@@ -16,6 +16,16 @@ function register(request, response) {
     email,
     password,
   }
+  let invalidKeys = ''
+  for (const key in newUser) {
+    if (newUser[key] === undefined) {
+      invalidKeys += `'${key}' `
+    }
+  }
+
+  if (invalidKeys) {
+    return formatedResponse(response, 400, `Missing ${invalidKeys}`);
+  }
 
   if (existsSync(PATH)) {
     const [user, users] = findBy('email', email);
@@ -45,6 +55,9 @@ function register(request, response) {
 
 function login(request, response) {
   const { email, password } = request.body;
+  if (!email || !password) {
+    formatedResponse(response, 404, 'invalid credentials')
+  }
   if (existsSync(PATH)) {
     const [user] = findBy('email', email);
     if (!user) {

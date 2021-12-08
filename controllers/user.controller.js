@@ -83,7 +83,14 @@ function login(request, response) {
 function getUsers(request, response) {
   const users = findAll();
   if (users) {
-    return formatedResponse(response, 200, 'ok', users);
+
+    const safeUsers = users.map((user) => {
+      const copy = { ...user };
+      delete copy.password;
+      return copy;
+    });
+
+    return formatedResponse(response, 200, 'ok', safeUsers);
   }
   return formatedResponse(response, 200, 'ok', []);
 }
@@ -92,7 +99,9 @@ function getUser(request, response) {
   const { id } = request.params;
   const [user] = findBy('id', id);
   if (user) {
-    return formatedResponse(response, 200, 'ok', user);
+    const safeUser = { ...user }
+    delete safeUser.password
+    return formatedResponse(response, 200, 'ok', safeUser);
   }
   return formatedResponse(response, 404, 'user not found');
 }

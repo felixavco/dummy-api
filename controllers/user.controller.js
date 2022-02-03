@@ -13,13 +13,13 @@ function register(request, response) {
   const newUser = {
     id: uuidv4(),
     name,
-    email,
+    email: email.toLowerCase(),
     password,
-  }
-  let invalidKeys = ''
+  };
+  let invalidKeys = '';
   for (const key in newUser) {
     if (newUser[key] === undefined) {
-      invalidKeys += `'${key}' `
+      invalidKeys += `'${key}' `;
     }
   }
 
@@ -33,22 +33,16 @@ function register(request, response) {
       return formatedResponse(response, 401, 'user already exist');
     }
     createdUser = save(JSON.stringify([...users, newUser]));
-
   } else {
     createdUser = save(JSON.stringify([newUser]));
   }
 
   if (createdUser) {
     delete newUser.password;
-    return formatedResponse(
-      response,
-      201,
-      'user created!',
-      {
-        user: newUser,
-        token: getToken(newUser.id),
-      }
-    );
+    return formatedResponse(response, 201, 'user created!', {
+      user: newUser,
+      token: getToken(newUser.id),
+    });
   }
   return formatedResponse(response, 400, 'unable to create user');
 }
@@ -56,25 +50,20 @@ function register(request, response) {
 function login(request, response) {
   const { email, password } = request.body;
   if (!email || !password) {
-    formatedResponse(response, 404, 'invalid credentials')
+    formatedResponse(response, 404, 'invalid credentials');
   }
   if (existsSync(PATH)) {
-    const [user] = findBy('email', email);
+    const [user] = findBy('email', email.toLowerCase());
     if (!user) {
       return formatedResponse(response, 404, 'invalid credentials');
     }
 
     if (user.password === password) {
-      delete user.password
-      return formatedResponse(
-        response,
-        200,
-        'ok',
-        {
-          user,
-          token: getToken(user.id)
-        }
-      );
+      delete user.password;
+      return formatedResponse(response, 200, 'ok', {
+        user,
+        token: getToken(user.id),
+      });
     }
     return formatedResponse(response, 404, 'invalid credentials');
   }
@@ -83,7 +72,6 @@ function login(request, response) {
 function getUsers(request, response) {
   const users = findAll();
   if (users) {
-
     const safeUsers = users.map((user) => {
       const copy = { ...user };
       delete copy.password;
@@ -99,8 +87,8 @@ function getUser(request, response) {
   const { id } = request.params;
   const [user] = findBy('id', id);
   if (user) {
-    const safeUser = { ...user }
-    delete safeUser.password
+    const safeUser = { ...user };
+    delete safeUser.password;
     return formatedResponse(response, 200, 'ok', safeUser);
   }
   return formatedResponse(response, 404, 'user not found');
@@ -142,7 +130,7 @@ function findBy(key, value) {
 function save(data) {
   try {
     writeFileSync(PATH, data);
-    console.log('User created!')
+    console.log('User created!');
     return true;
   } catch (error) {
     console.error(error.toString());
